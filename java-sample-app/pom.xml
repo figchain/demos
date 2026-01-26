@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>io.figchain.demo</groupId>
+    <artifactId>java-demo-app</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>java-demo-app</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>21</maven.compiler.release>
+        <exec.mainClass>io.figchain.demo.App</exec.mainClass>
+        <figchain.workspaceId>${env.FIGCHAIN_WORKSPACE_ID}</figchain.workspaceId>
+        <figchain.client.version>1.2.3</figchain.client.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.figchain</groupId>
+            <artifactId>figchain-client</artifactId>
+            <version>${figchain.client.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.19.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.12.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>figchain</groupId>
+            <artifactId>test</artifactId>
+            <version>1</version>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>figchain-public</id>
+            <url>https://maven.repo.figchain.io/releases</url>
+        </repository>
+        <!--repository>
+            <id>figchain-schemas</id>
+            <url>https://maven.repo.figchain.io/releases/${figchain.workspaceId}</url>
+        </repository-->
+    <repository>
+        <id>figchain-schemas</id>
+        <url>http://localhost:8081/releases/workspace-7ab2c1c8-d5df-482c-bde6-39c9fd38100f</url>
+    </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>${exec.mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
