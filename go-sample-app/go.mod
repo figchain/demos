@@ -3,7 +3,7 @@ module go-sample-app
 go 1.25.5
 
 require (
-	github.com/figchain/go-client v0.2.6
+	github.com/figchain/go-client v0.3.0
 	github.com/hamba/avro/v2 v2.31.0
 )
 
@@ -43,6 +43,7 @@ require (
 	github.com/spf13/viper v1.21.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
+	golang.org/x/crypto v0.47.0 // indirect
 	golang.org/x/sys v0.40.0 // indirect
 	golang.org/x/text v0.33.0 // indirect
 )

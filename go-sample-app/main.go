@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"os"
 	"os/signal"
@@ -13,6 +14,9 @@ import (
 )
 
 func main() {
+	once := flag.Bool("once", false, "Exit after initial fetch")
+	flag.Parse()
+
 	log.Println("Starting FigChain Go Sample App...")
 
 	// 1. Initialize Client using config file generated from UI
@@ -23,7 +27,7 @@ func main() {
 		log.Fatalf("Config file %s not found. Please place the generated config file in the root.", configPath)
 	}
 
-	// We can also override specific settings if needed, e.g. BaseURL for local testing
+	// We can also override specific settings if needed, using a second argument to NewClientFromConfig
 	c, err := client.NewClientFromConfig(configPath)
 	if err != nil {
 		log.Fatalf("Failed to create FigChain client: %v", err)
@@ -66,25 +70,13 @@ func main() {
 		log.Printf("Initial value fetched. test=%+v", initialVal.Test)
 	}
 
+	if *once {
+		log.Println("Exiting because -once was specified.")
+		return
+	}
+
 	// Keep the application running
 	log.Println("Waiting for updates... (Press Ctrl+C to exit)")
-
-	// Also perform an initial fetch?
-	// RegisterListener only triggers on *updates* (polling changes).
-	// If we want the *current* value immediately, we should use GetFig.
-	// But for this POC, verifying the callback is the goal.
-	// The client performs an initial bootstrap, so if the value changes or is pushed, we get it.
-	// If we want to see the initial value, we can use GetFig.
-
-	/*
-		ctx := evaluation.NewEvaluationContext(nil)
-		var initialConfig models.Test
-		if err := c.GetFig(figKey, &initialConfig, ctx); err == nil {
-			log.Printf("Initial Config: %+v", initialConfig)
-		} else {
-			log.Printf("Initial GetFig failed (might not exist yet): %v", err)
-		}
-	*/
 
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
