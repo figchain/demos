@@ -47,14 +47,10 @@
             <id>figchain-public</id>
             <url>https://maven.repo.figchain.io/releases</url>
         </repository>
-        <!--repository>
+        <repository>
             <id>figchain-schemas</id>
             <url>https://maven.repo.figchain.io/releases/${figchain.workspaceId}</url>
-        </repository-->
-    <repository>
-        <id>figchain-schemas</id>
-        <url>http://localhost:8081/releases/workspace-7ab2c1c8-d5df-482c-bde6-39c9fd38100f</url>
-    </repository>
+        </repository>
     </repositories>
 
     <build>
